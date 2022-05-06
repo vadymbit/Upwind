@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Upwind</string>
+    <string name="temp">%1$d°</string>
+    <string name="temp_c">%1$d°C</string>
+    <string name="temp_f">%1$d°F</string>
+    <string name="pop">%1$d%%</string>
+    <string name="home_today_forecast">Today</string>
+    <string name="wind_speed_kph">%1$d Km/h</string>
+    <string name="wind_speed_miph">%1$d Mi/h</string>
+    <string name="wind_speed_mps">%1$d M/s</string>
+    <string name="pressure">%1$.0f mBar</string>
+    <string name="user_location">Your Location Now</string>
+    <string name="settings_temperature">Temperature</string>
+    <string name="settings_wind_speed">Wind speed</string>
+    <string-array name="settings_temp_units">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </string-array>
+    <string-array name="settings_wind_speed_units">
+        <item>Kilometers/h</item>
+        <item>Miles/h</item>
+        <item>Meters/s</item>
+    </string-array>
+</resources>
