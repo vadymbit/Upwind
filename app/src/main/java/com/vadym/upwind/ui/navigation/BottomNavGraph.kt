@@ -1,5 +1,6 @@
 package com.vadym.upwind.ui.navigation
 
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -13,6 +14,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun BottomNavGraph(
+    scaffoldState: ScaffoldState,
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
@@ -29,7 +31,7 @@ fun BottomNavGraph(
             WeatherListScreen { navController.navigateUp() }
         }
         composable(route = BottomBarScreen.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(scaffoldState)
         }
     }
 }

@@ -22,7 +22,7 @@ class HomeViewModel(
     val weatherModel = repository.getCityWeather()
         .stateIn(
             viewModelScope, SharingStarted.WhileSubscribed(), WeatherModel(
-                CurrentWeatherModel("City", 0, "Cloudy", 10, 0.522f, 10, UNIT_TYPE_KPH,"", ""),
+                CurrentWeatherModel("", 0, "", 0, 0f, 0, UNIT_TYPE_KPH,"", ""),
                 emptyList(),
                 emptyList()
             )

@@ -1,6 +1,5 @@
 package com.vadym.upwind.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,23 +35,25 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@SuppressLint("VisibleForTests")
 @Composable
 private fun App() {
     UpwindTheme {
         val navController = rememberNavController()
         val systemUiController = rememberSystemUiController()
+        val scaffoldState = rememberScaffoldState()
         SideEffect {
             systemUiController.setSystemBarsColor(
                 color = Color.Transparent
             )
         }
         Scaffold(
+            scaffoldState = scaffoldState,
             bottomBar = {
                 BottomBar(navController = navController)
             }
         ) {
             BottomNavGraph(
+                scaffoldState = scaffoldState,
                 navController = navController,
                 modifier = Modifier
                     .padding(it)
@@ -97,7 +98,7 @@ fun RowScope.AddItem(
         icon = {
             Icon(
                 imageVector = screen.icon,
-                contentDescription = "Navigation icon"
+                contentDescription = screen.route
             )
         },
         selectedContentColor = MaterialTheme.colors.secondary.copy(0.7f),

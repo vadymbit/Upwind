@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.vadym.upwind"
-        minSdk 24
+        minSdk 26
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -28,7 +28,6 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -50,17 +49,18 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0-beta01'
+    implementation "androidx.core:core-ktx:$core_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.activity:activity-compose:1.5.0-beta01'
+    implementation "androidx.activity:activity-compose:$activity_version"
+
+    //Accompanist
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
 
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
-
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
+    //GMS
+    implementation "com.google.android.gms:play-services-location:$gms_version"
 
     //Lifecycle components
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
@@ -69,7 +69,7 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     //Preferences DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

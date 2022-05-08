@@ -3,7 +3,6 @@ package com.vadym.upwind.data.repository
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.LocationManager
-import android.util.Log
 import androidx.core.location.LocationManagerCompat
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -28,29 +27,28 @@ class LocationRepository(
 
     suspend fun saveUserLocation() {
         val location = getMyLocation()
-        prefsDataStore.setUserLocation(location.first, location.second)
+        location?.let {
+            prefsDataStore.setUserLocation(location.first, location.second)
+        }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("MissingPermission")
     suspend fun getMyLocation() =
-        suspendCancellableCoroutine<Pair<Double, Double>> { continuation ->
-            val fusedLocationProvider = fusedLocationProviderClient.getCurrentLocation(
+        suspendCancellableCoroutine<Pair<Double, Double>?> { continuation ->
+            val currentLocation = fusedLocationProviderClient.getCurrentLocation(
                 LocationRequest.PRIORITY_LOW_POWER,
                 cts.token
             )
-            fusedLocationProvider.addOnSuccessListener { location ->
-                continuation.resume(value = Pair(location.latitude, location.longitude), null)
+            currentLocation.addOnSuccessListener { location ->
+                location?.let {
+                    continuation.resume(value = Pair(location.latitude, location.longitude), null)
+                }
             }
-            fusedLocationProvider.addOnFailureListener { exception ->
-                Log.d("LocationRepository", "Get location is failure")
+            currentLocation.addOnFailureListener { exception ->
                 continuation.cancel(cause = exception)
             }
             continuation.invokeOnCancellation {
-                Log.d(
-                    "LocationRepository",
-                    "Location coroutine is canceled ${it?.localizedMessage}"
-                )
                 cts.cancel()
             }
         }
@@ -60,7 +58,8 @@ class LocationRepository(
         val location = prefsDataStore.getLocation().filterNotNull()
         return location.mapLatest {
             if (it.first != null && it.second != null) {
-                return@mapLatest getCities("${it.first},${it.second}").first().name
+                val cities = getCities("${it.first},${it.second}")
+                if (cities.isNotEmpty()) return@mapLatest cities.first().name else ""
             } else {
                 return@mapLatest null
             }

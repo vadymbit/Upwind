@@ -26,10 +26,14 @@ import com.vadym.upwind.utils.vectorBrush
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = getViewModel()) {
+fun SettingsScreen(
+    scaffoldState: ScaffoldState,
+    viewModel: SettingsViewModel = getViewModel()
+) {
     val tempUnitType by viewModel.tempUnit.collectAsState()
     val windSpeedUnitType by viewModel.windSpeedUnit.collectAsState()
     val currentCity by viewModel.currentLocation.collectAsState()
+    val timeFormat by viewModel.timeFormat.collectAsState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -43,7 +47,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = getViewModel()) {
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_clear_sky_fill),
-            contentDescription = "Sun icon",
+            contentDescription = null,
             modifier = Modifier
                 .weight(2f)
                 .fillMaxSize()
@@ -77,21 +81,34 @@ fun SettingsScreen(viewModel: SettingsViewModel = getViewModel()) {
         )
         SettingsBar(
             options = stringArrayResource(id = R.array.settings_temp_units),
-            selectedOptionText = stringArrayResource(id = R.array.settings_temp_units)[tempUnitType],
             settingName = stringResource(id = R.string.settings_temperature),
+            selectedOptionText = stringArrayResource(id = R.array.settings_temp_units)[tempUnitType],
             modifier = Modifier.fillMaxWidth(),
             onClick = { viewModel.setTempUnit(it) }
         )
         SettingsBar(
             options = stringArrayResource(id = R.array.settings_wind_speed_units),
-            selectedOptionText = stringArrayResource(id = R.array.settings_wind_speed_units)[windSpeedUnitType],
             settingName = stringResource(id = R.string.settings_wind_speed),
+            selectedOptionText = stringArrayResource(id = R.array.settings_wind_speed_units)[windSpeedUnitType],
             modifier = Modifier.fillMaxWidth(),
             onClick = { viewModel.setWindSpeedUnit(it) }
+        )
+        SettingsBar(
+            options = stringArrayResource(id = R.array.settings_time_format),
+            settingName = stringResource(id = R.string.settings_time_format),
+            selectedOptionText = stringArrayResource(id = R.array.settings_time_format)[timeFormat],
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { viewModel.setTimeFormat(it) }
         )
         Spacer(modifier = Modifier.weight(1f))
         LocationFab(
             modifier = Modifier,
+            showSnackbar = { message, duration ->
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = message,
+                    duration = duration
+                )
+            },
             requestLocation = { viewModel.requestUserLocation() }
         )
     }
@@ -104,7 +121,7 @@ fun LocationBar() {
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_my_location),
-            contentDescription = "My Location",
+            contentDescription = stringResource(id = R.string.icon_description_location),
             modifier = Modifier
                 .alpha(0.5f)
                 .padding(end = 8.dp)
@@ -130,7 +147,7 @@ fun WeatherDetailBar(
     ) {
         WeatherDetailBox(
             icon = R.drawable.ic_wind,
-            iconDescription = "Wind speed",
+            iconDescription = stringResource(id = R.string.icon_description_wind_speed),
             text = getWindSpeedByUnitType(
                 windSpeedUnitType = windSpeedUnitType
             ),
@@ -138,13 +155,13 @@ fun WeatherDetailBar(
         )
         WeatherDetailBox(
             icon = R.drawable.ic_drop,
-            iconDescription = "Chance of rain",
+            iconDescription = stringResource(id = R.string.icon_description_chance_of_rain),
             text = stringResource(id = R.string.pop, 13),
             modifier = Modifier.padding(horizontal = 8.dp)
         )
         WeatherDetailBox(
             icon = R.drawable.ic_pressure,
-            iconDescription = "Pressure",
+            iconDescription = stringResource(id = R.string.icon_description_pressure),
             text = stringResource(id = R.string.pressure, 1033f),
             modifier = Modifier.padding(horizontal = 8.dp)
         )

@@ -16,6 +16,7 @@ class WeatherRepository(
 ) {
     private val tempUnitType = settingsRepository.getTempUnits()
     private val windSpeedUnitType = settingsRepository.getWindSpeedUnits()
+    private val timeFormat = settingsRepository.getTimeFormat()
 
     suspend fun loadWeatherByCity(
         lat: String,
@@ -57,12 +58,14 @@ class WeatherRepository(
         return combine(
             dao.getWeather().filterNotNull(),
             tempUnitType,
-            windSpeedUnitType
-        ) { weather, tempUnitType, windSpeedUnitType ->
+            windSpeedUnitType,
+            timeFormat
+        ) { weather, tempUnitType, windSpeedUnitType, timeFormat ->
             WeatherMapper.weatherDBtoUIModel(
                 weatherDB = weather,
                 tempUnitType = tempUnitType,
-                windSpeedUnitType = windSpeedUnitType
+                windSpeedUnitType = windSpeedUnitType,
+                timeFormat = timeFormat
             )
         }
     }

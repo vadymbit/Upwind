@@ -34,7 +34,7 @@ fun SunStatus(
                 )
             },
             brush = Brush.horizontalGradient(
-                listOf(Color.Yellow, Pink200, Color.LightGray)
+                listOf(Color.Yellow.copy(0.5f), Pink200, Color.LightGray)
             ),
             style = Stroke(width = 4f)
         )

@@ -22,7 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.vadym.upwind.R
 import com.vadym.upwind.model.SearchBarState
 import com.vadym.upwind.ui.weatherlist.components.SearchBar
 import com.vadym.upwind.ui.weatherlist.components.WeatherBox
@@ -57,7 +59,7 @@ fun WeatherListScreen(
             IconButton(onClick = { editMode = !editMode }) {
                 Icon(
                     imageVector = Icons.Outlined.Edit,
-                    contentDescription = "Edit weather"
+                    contentDescription = stringResource(id = R.string.icon_description_edit_weather_mode)
                 )
             }
         }
@@ -70,9 +72,18 @@ fun WeatherListScreen(
                 items(searchBarState.citiesList.size) {
                     val city = searchBarState.citiesList[it]
                     val cityName: String = if (searchBarState.citiesList[it].region.isNotEmpty()) {
-                        "${city.name}, ${city.region}, ${city.country}"
+                        stringResource(
+                            id = R.string.weather_list_full_city_location,
+                            city.name,
+                            city.region,
+                            city.country
+                        )
                     } else {
-                        "${city.name}, ${city.country}"
+                        stringResource(
+                            id = R.string.weather_list_short_city_location,
+                            city.name,
+                            city.country
+                        )
                     }
                     Text(
                         text = cityName,
@@ -92,7 +103,9 @@ fun WeatherListScreen(
             items(weatherList.size) {
                 WeatherBox(
                     isCloseVisible = editMode,
-                    onCloseClick = { viewModel.deleteCityWeather(it) },
+                    onCloseClick = { cityId ->
+                        viewModel.deleteCityWeather(cityId)
+                    },
                     weatherModel = weatherList[it],
                     modifier = Modifier
                         .padding(6.dp)

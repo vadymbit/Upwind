@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vadym.upwind.data.repository.LocationRepository
 import com.vadym.upwind.data.repository.SettingsRepository
+import com.vadym.upwind.utils.Const.HOUR_FORMAT_24
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -16,6 +17,8 @@ class SettingsViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
     val windSpeedUnit = settingsRepository.getWindSpeedUnits()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
+    val timeFormat = settingsRepository.getTimeFormat()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), HOUR_FORMAT_24)
     val currentLocation = locationRepository.getCurrentCity()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
 
@@ -39,6 +42,16 @@ class SettingsViewModel(
             return true
         }
         return false
+    }
+
+    fun setTimeFormat(timeFormat: Int) {
+        viewModelScope.launch {
+            if (timeFormat == HOUR_FORMAT_24){
+                settingsRepository.setTimeFormat(is24HourFormat = true)
+            } else {
+                settingsRepository.setTimeFormat(is24HourFormat = false)
+            }
+        }
     }
 
     private fun isLocationServiceEnabled(): Boolean {

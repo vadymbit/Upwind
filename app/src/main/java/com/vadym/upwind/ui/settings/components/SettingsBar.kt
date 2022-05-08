@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -21,7 +20,6 @@ fun SettingsBar(
     onClick: (Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    //val selectedOptionText by rememberSaveable { mutableStateOf(initialValue) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -61,7 +59,6 @@ fun SettingsBar(
                 options.forEachIndexed { index, option ->
                     DropdownMenuItem(
                         onClick = {
-                            //selectedOptionText = option
                             expanded = false
                             onClick(index)
                         }

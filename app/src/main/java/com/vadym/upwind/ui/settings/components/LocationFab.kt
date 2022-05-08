@@ -1,50 +1,44 @@
 package com.vadym.upwind.ui.settings.components
 
 import android.Manifest
-import android.util.Log
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.vadym.upwind.R
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun LocationFab(
     modifier: Modifier = Modifier,
+    showSnackbar: suspend (String, SnackbarDuration) -> Unit,
     requestLocation: () -> Boolean
 ) {
+    val scope = rememberCoroutineScope()
     val locationPermissionState = rememberPermissionState(
         permission = Manifest.permission.ACCESS_COARSE_LOCATION,
         onPermissionResult = {
             if (it) {
-                Log.d("Location", "Location disabled? please enable it")
+                val isLocationEnabled = requestLocation()
+                if (!isLocationEnabled) {
+                    scope.launch {
+                        showSnackbar("Location service disabled. Please enable it", SnackbarDuration.Short)
+                    }
+                }
             } else {
-                Log.d("Location", "else")
+                scope.launch {
+                    showSnackbar("Can't get your location. Permissions denied", SnackbarDuration.Short)
+                }
             }
         }
     )
-    fun checkPermissions() {
-        when {
-            locationPermissionState.status.isGranted -> {
-                val isLocationEnabled = requestLocation()
-                if (!isLocationEnabled) {
-                    Log.d("Location", "Location disabled? please enable it")
-                }
-            }
-            locationPermissionState.status.shouldShowRationale -> {
-                Log.d("Location", "shouldShowRationale")
-            }
-            else -> {
-                Log.d("Location", "else")
-            }
-        }
-    }
+
     FloatingActionButton(
         onClick = {
             locationPermissionState.launchPermissionRequest()

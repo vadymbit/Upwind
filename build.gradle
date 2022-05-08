@@ -4,10 +4,14 @@ buildscript {
         retrofit_version = '2.9.0'
         moshi_version = '1.13.0'
         lifecycle_version = '2.5.0-beta01'
-        nav_version = "2.5.0-beta01"
+        nav_version = '2.5.0-beta01'
         room_version = "2.4.2"
         koin_version = '3.2.0-beta-1'
-        accompanist_version = "0.24.6-alpha"
+        accompanist_version = '0.24.6-alpha'
+        gms_version = '19.0.1'
+        datastore_version = '1.0.0'
+        activity_version = '1.5.0-beta01'
+        core_version = '1.8.0-beta01'
     }
     dependencies {
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")

@@ -79,7 +79,8 @@ object WeatherMapper {
     fun weatherDBtoUIModel(
         weatherDB: WeatherDB,
         tempUnitType: Int,
-        windSpeedUnitType: Int
+        windSpeedUnitType: Int,
+        timeFormat: Int
     ): WeatherModel {
         val currentWeather: CurrentWeatherModel = weatherDB.currentWeather.run {
             CurrentWeatherModel(
@@ -90,8 +91,8 @@ object WeatherMapper {
                 pressure = pressure,
                 windSpeed = UnitTypeUtils.setWindSpeedByUnitType(windSpeedKph, windSpeedUnitType),
                 windSpeedUnitType = windSpeedUnitType,
-                sunrise = sunrise,
-                sunset = sunset
+                sunrise = TimeUtils.convertAstroTimeToRegional(sunrise, timeFormat),
+                sunset = TimeUtils.convertAstroTimeToRegional(sunset, timeFormat)
             )
         }
         val dailyForecast = weatherDB.dailyForecast.map {
@@ -109,7 +110,7 @@ object WeatherMapper {
             HourlyForecastModel(
                 time = TimeUtils.convertUnixTimeToRegional(
                     it.time.toLong(),
-                    true,
+                    timeFormat,
                     weatherDB.currentWeather.cityTimeZone
                 ),
                 condition = IconResourceHelper.getResourceByCode(

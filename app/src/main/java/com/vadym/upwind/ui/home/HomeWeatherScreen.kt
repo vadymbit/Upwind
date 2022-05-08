@@ -109,7 +109,7 @@ fun CurrentTemperatureBox(
         }
     ) {
         val infiniteTransaction = rememberInfiniteTransition()
-        val moveX by infiniteTransaction.animateValue(
+        val bigCloudAnimation by infiniteTransaction.animateValue(
             initialValue = maxWidth,
             targetValue = -maxWidth,
             typeConverter = Dp.VectorConverter,
@@ -121,7 +121,7 @@ fun CurrentTemperatureBox(
                 )
             )
         )
-        val moveXC by infiniteTransaction.animateValue(
+        val smallCloudAnimation by infiniteTransaction.animateValue(
             initialValue = maxWidth,
             targetValue = -maxWidth,
             typeConverter = Dp.VectorConverter,
@@ -135,7 +135,7 @@ fun CurrentTemperatureBox(
         )
         Box(
             modifier = Modifier
-                .offset(x = moveXC)
+                .offset(x = smallCloudAnimation)
                 .align(Alignment.TopEnd)
         ) {
             Cloud(
@@ -145,7 +145,7 @@ fun CurrentTemperatureBox(
         }
         Box(
             modifier = Modifier
-                .offset(moveX)
+                .offset(bigCloudAnimation)
                 .align(Alignment.Center)
         ) {
             BigCloud(
@@ -255,17 +255,17 @@ fun WeatherDetailBar(
     ) {
         WeatherDetailBox(
             icon = R.drawable.ic_drop,
-            iconDescription = "Chance of rain",
+            iconDescription = stringResource(id = R.string.icon_description_chance_of_rain),
             text = stringResource(id = R.string.pop, currentWeather.pop)
         )
         WeatherDetailBox(
             icon = R.drawable.ic_pressure,
-            iconDescription = "Pressure",
+            iconDescription = stringResource(id = R.string.icon_description_pressure),
             text = stringResource(id = R.string.pressure, currentWeather.pressure)
         )
         WeatherDetailBox(
             icon = R.drawable.ic_wind,
-            iconDescription = "Wind speed",
+            iconDescription = stringResource(id = R.string.icon_description_wind_speed),
             text = getWindSpeedByUnitType(
                 windSpeedUnitType = currentWeather.windSpeedUnitType,
                 currentWeather.windSpeed

@@ -12,6 +12,14 @@
     <string name="user_location">Your Location Now</string>
     <string name="settings_temperature">Temperature</string>
     <string name="settings_wind_speed">Wind speed</string>
+    <string name="settings_time_format">Time format</string>
+    <string name="icon_description_pressure">Pressure</string>
+    <string name="icon_description_chance_of_rain">Chance of rain</string>
+    <string name="icon_description_wind_speed">Wind speed</string>
+    <string name="icon_description_location">My current Location</string>
+    <string name="icon_description_edit_weather_mode">Edit weather mode</string>
+    <string name="weather_list_full_city_location">%1$s, %2$s, %3$s</string>
+    <string name="weather_list_short_city_location">%1$s, %2$s</string>
     <string-array name="settings_temp_units">
         <item>Celsius</item>
         <item>Fahrenheit</item>
@@ -20,5 +28,9 @@
         <item>Kilometers/h</item>
         <item>Miles/h</item>
         <item>Meters/s</item>
+    </string-array>
+    <string-array name="settings_time_format">
+        <item>24 hour format</item>
+        <item>12 hour format</item>
     </string-array>
 </resources>

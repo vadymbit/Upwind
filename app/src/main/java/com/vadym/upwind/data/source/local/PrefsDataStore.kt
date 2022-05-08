@@ -1,11 +1,14 @@
 package com.vadym.upwind.data.source.local
 
 import android.content.Context
+import android.text.format.DateFormat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import com.vadym.upwind.utils.Const.DATASTORE_NAME
 import com.vadym.upwind.utils.Const.TEMP_UNIT
+import com.vadym.upwind.utils.Const.TIME_FORMAT
 import com.vadym.upwind.utils.Const.USER_LATITUDE
 import com.vadym.upwind.utils.Const.USER_LONGITUDE
 import com.vadym.upwind.utils.Const.WIND_SPEED_UNIT
@@ -13,7 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class PrefsDataStore(private val context: Context) {
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "SETTINGS")
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DATASTORE_NAME)
 
     suspend fun setTempUnits(unitType: Int) {
         context.dataStore.edit { prefs ->
@@ -43,8 +46,18 @@ class PrefsDataStore(private val context: Context) {
     }
 
     fun getLocation(): Flow<Pair<Double?, Double?>> {
-        return context.dataStore.data.map {  prefs ->
+        return context.dataStore.data.map { prefs ->
             Pair(prefs[USER_LATITUDE], prefs[USER_LONGITUDE])
         }
+    }
+
+    suspend fun setTimeFormat(is24HourFormat: Boolean) {
+        context.dataStore.edit { prefs ->
+            prefs[TIME_FORMAT] = is24HourFormat
+        }
+    }
+
+    fun getTimeFormat(): Flow<Boolean> = context.dataStore.data.map { prefs ->
+        prefs[TIME_FORMAT] ?: DateFormat.is24HourFormat(context)
     }
 }
